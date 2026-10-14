@@ -1,97 +1,125 @@
-# 🍕 SliceCraft — Full-Stack Artisan Pizza Delivery & Inventory Platform
+# 🍕 SliceCraft — Full-Stack Pizza Ordering & Real-Time Inventory Management Platform
 
-> **SliceCraft** is a production-grade, full-stack pizza ordering and inventory management platform featuring separate Admin and User roles, real-time kitchen order tracking, Razorpay test payment integration, interactive custom pizza builder, and automated stock monitoring with email alerts.
-
----
-
-## 🚀 Tech Stack
-
-- **Frontend**: React.js (Vite), Modern Vanilla CSS Design Tokens, Lucide Icons, Canvas Confetti
-- **Backend**: Node.js, Express.js (ES Modules)
-- **Database**: MongoDB with Mongoose ODM (includes embedded zero-setup memory fallback for instant out-of-the-box local testing)
-- **Real-Time Communication**: Socket.io (WebSockets with polling fallback)
-- **Payment Gateway**: Razorpay (Test Mode with simulated card/UPI and signature verification)
-- **Scheduled Background Jobs**: `node-cron`
-- **Email Service**: Nodemailer (custom SMTP, Ethereal test inbox, and sandbox preview)
+> **Oasis Infobyte Internship Project Submission**  
+> **Domain:** Web Development  
+> **Task:** Pizza Delivery Full-Stack Application  
+> **Author:** Ali Shahjee (Adroit Ali)  
 
 ---
 
-## 📋 Feature Checklist Implementation
+## 📌 1. Objective
 
-### 👤 User Side
-- [x] **User Registration with Email Verification**: Secure password hashing with `bcryptjs`, 32-byte cryptographic verification token, email delivery with activation link, and test sandbox quick-verify helper.
-- [x] **User Login with JWT Authorisation**: Signed JSON Web Tokens (7-day validity), route guards, unverified account protection (HTTP 403 until verified).
-- [x] **Forgot Password Flow**: Request password reset link by email, 1-hour expiration token, secure reset form with validation.
-- [x] **Pizza Dashboard & Varieties**: 6 handcrafted signature pizzas (*Margherita Rustica, Truffle & Wild Mushroom, Fiery Peri Peri, Quattro Formaggi, Mediterranean Harvest, Smokey BBQ*), category filters (*Veg, Gourmet*), ratings, and prep times.
-- [x] **Custom Pizza Builder Flow (4 Steps + Real-time Visualizer)**:
-  - **Step 1**: Choose a pizza base (5 options: *Thin Crust, Cheese Burst, Hand Tossed, Gluten-Free Cauliflower, Deep Pan Crust*).
-  - **Step 2**: Choose a sauce (5 options: *Classic Marinara, Creamy Garlic Alfredo, Spicy Peri Peri, Pesto Genovese, Smokey BBQ*).
-  - **Step 3**: Choose cheese type (*Mozzarella, Sharp Cheddar, Ricotta & Feta, Vegan Almond Cheese, Aged Parmesan*).
-  - **Step 4**: Choose vegetables (*multiple select: Black Olives, Bell Peppers, Mushrooms, Jalapeños, Red Onions, Sweet Corn, Baby Spinach, Sun-dried Tomatoes*).
-  - **Live Visualizer**: Interactive SVG/canvas rendering crust blistering, sauce spread color, melted cheese texture, and scattered toppings as selected.
-- [x] **Order Summary & Financial Breakdown**: Itemized custom recipe breakdown, delivery destination form, calculated subtotal, 5% tax, and delivery fee.
-- [x] **Razorpay Checkout Integration**: Test mode integration with simulated card/UPI modal. Clicking **"Simulate Success"** confirms order, validates signature, auto-decrements stock, and triggers confetti.
-- [x] **Real-Time Order Status Tracker**: Live 4-stage stepper (*Order Received → In Kitchen → Sent to Delivery → Delivered*) synced via WebSockets without page reload.
+The primary objective of this project is to build a production-grade, full-stack pizza ordering and inventory management platform featuring:
+- **Dual Role Architecture**: Distinct User and Admin access controls.
+- **User Experience**: Email verification, secure JWT authorization, password reset flow, interactive 4-step custom pizza builder with dynamic SVG visualizer, and Razorpay test payment integration.
+- **Real-Time Tracking**: Live order status progression (*Order Received → In Kitchen → Sent to Delivery → Delivered*) powered by WebSockets (Socket.io) without page reload.
+- **Admin & Inventory Control**: Real-time inventory tracking for 4 core ingredient categories (bases, sauces, cheeses, vegetables), automatic inventory decrements after each order, manual stock adjustment, and automated background stock monitoring with email alerts using `node-cron`.
 
 ---
 
-### 🛡️ Admin Side
-- [x] **Separate Admin Login**: Dedicated portal at `/admin/login` with secret security key check. Completely separated from regular user registration.
-- [x] **Inventory Dashboard**: Live tracking of all 4 ingredient categories (bases, sauces, cheeses, vegetables), stock counts, unit measures, and low-stock indicators.
-- [x] **Automatic Stock Decrement**: Deducts exact quantities of base, sauce, cheese, and all selected vegetables immediately after every confirmed order.
-- [x] **Manual Stock Updates**: Quick adjustment buttons (`+10`, `+5`, `-1`) and direct edit modal to adjust stock counts and alert thresholds.
-- [x] **Automated Low-Stock Notifications**: Background scheduled job (`node-cron`) audits inventory every cycle; dispatches HTML low-stock alert emails to the admin when items drop below threshold (< 20 units). Includes on-demand audit trigger button.
-- [x] **Order Management Panel**: Real-time incoming order feed (`order:new` socket event). Kitchen admin updates status directly.
-- [x] **Real-Time Synchronization**: Any status update in the admin panel instantly updates the customer's tracking stepper via WebSockets.
+## 🛠️ 2. Tools & Technologies Used
+
+| Category | Tools & Libraries | Purpose |
+|---|---|---|
+| **Frontend Framework** | **React.js 19 (Vite)** | High-performance reactive UI and single-page routing |
+| **Styling & Design System** | **Modern Vanilla CSS & Design Tokens** | Glassmorphism, animations, responsive design, dark mode theme |
+| **Icons & UI Feedback** | **Lucide Icons & Canvas Confetti** | Crisp vector iconography and celebration particle effects |
+| **Backend Runtime & API** | **Node.js (ESM) & Express.js** | Modular RESTful API architecture and route middleware |
+| **Database & Modeling** | **MongoDB & Mongoose ODM** | Data modeling with embedded in-memory fallback for zero-setup execution |
+| **Real-Time Communication** | **Socket.io (WebSockets)** | Instant bi-directional order status updates and stock sync |
+| **Payment Gateway** | **Razorpay (Test Mode)** | Checkout order creation, simulated payment flow, and signature verification |
+| **Scheduled Background Tasks** | **`node-cron`** | Periodic automated low-stock audit scheduler |
+| **Email Services** | **Nodemailer** | SMTP email delivery for verification, password resets, and low-stock alerts |
+| **Security & Authentication** | **JWT & `bcryptjs`** | Secure password hashing, token generation, and authorization guards |
+
+---
+
+## 📋 3. Steps Performed
+
+1. **System Design & Architecture Planning**:
+   - Outlined entity schemas for `User`, `Inventory`, `Order`, and `Pizza`.
+   - Planned customer ordering funnel and admin kitchen dispatch workflows.
+2. **Backend API & Middleware Engineering**:
+   - Developed authentication controllers for registration, email verification token generation, login, and forgot/reset password flows.
+   - Built dual-mode data persistence: real Mongoose ODM connection + embedded store for immediate local testing.
+   - Configured Nodemailer email dispatch templates for account verification, password resets, and low-stock notifications.
+   - Integrated `node-cron` scheduled background worker auditing inventory stock against configurable thresholds (`< 20` units).
+3. **Real-Time WebSockets Engine**:
+   - Configured Socket.io server and client context for live room joining (`order:<id>`, `admin_channel`).
+   - Integrated events: `order:new`, `order:status_changed`, `inventory:updated`, and `inventory:low_stock_alert`.
+4. **Interactive Frontend Customization Studio**:
+   - Built a 4-step interactive pizza builder: **Base (5 options)**, **Sauce (5 options)**, **Cheese type**, and **Vegetables (multiple select)**.
+   - Created [`PizzaVisualizer.jsx`](file:///c:/Users/ALI/InfoByte%20Web%20Project%20React/client/src/components/PizzaVisualizer.jsx): a dynamic SVG rendering engine reflecting crust blister patterns, sauce spread colors, cheese melt textures, and scattered vegetable toppings in real-time.
+5. **Payment Gateway & Stock Decrement Integration**:
+   - Built Razorpay checkout flow with simulated success and card/UPI options.
+   - Programmed atomic inventory stock decrementing upon order confirmation.
+6. **Admin Portal & Live Dispatch Panel**:
+   - Implemented a separate admin login gateway at `/admin/login` protected by security keys and admin role guards.
+   - Developed inventory dashboard with quick adjust buttons (`+10`, `+5`, `-1`), direct edit modal, and on-demand alert audit trigger.
+   - Built incoming orders dispatch panel with one-click status transitions that instantly animate the customer's tracking stepper.
+7. **End-to-End Testing & Verification**:
+   - Created and executed [`server/test_flows.mjs`](file:///c:/Users/ALI/InfoByte%20Web%20Project%20React/server/test_flows.mjs) validating 22 automated integration tests covering all requirements.
+
+---
+
+## 🎯 4. Outcome & Results (in brief)
+
+- **100% Feature Completion**: Every requirement across User and Admin sides is fully functional, tested, and responsive.
+- **Flawless Real-Time Sync**: Order status changes made in the admin panel reflect instantly on the customer's dashboard without page reload.
+- **Robust Inventory Safeguards**: Inventory ingredients auto-decrement upon order completion; automated email warnings dispatch if stock falls below 20 units.
+- **22/22 Automated Tests Passed**: All API endpoints, security gates, checkout workflows, and database operations verified with zero errors.
 
 ---
 
 ## 🔑 Demo Credentials
 
-| Role | Email | Password | Special Key |
-|---|---|---|---|
-| **Chief Admin** | `admin@slicecraft.com` | `Admin@12345` | `admin_secret_portal_key_secure_2026` |
-| **Demo Customer** | `customer@slicecraft.com` | `User@12345` | — |
-
-*(Both login portals also include instant one-click auto-fill buttons for fast testing).*
+| Role | Portal URL | Email | Password | Admin Key / Notes |
+|---|---|---|---|---|
+| **Chief Admin** | `/admin/login` | `admin@slicecraft.com` | `Admin@12345` | `admin_secret_portal_key_secure_2026` |
+| **Customer** | `/login` | `customer@slicecraft.com` | `User@12345` | Verified account *(one-click auto-fill available)* |
 
 ---
 
-## 🏃 Quick Start Guide
+## 🚀 How to Run Locally
 
-### 1. Start the Backend Server
+### 1. Clone the Repository
+```bash
+git clone https://github.com/adroit-ali/slicecraft-pizza-delivery.git
+cd slicecraft-pizza-delivery
+```
+
+### 2. Start Backend Server
 ```bash
 cd server
 npm install
 npm run dev
-# Server runs on http://localhost:5000
+# Server runs on http://localhost:5000 (API: http://localhost:5000/api)
 ```
 
-### 2. Start the Frontend Client
+### 3. Start Frontend Client
 ```bash
-cd client
+cd ../client
 npm install
 npm run dev
-# Vite runs on http://localhost:5173
+# Application opens at http://localhost:5173
 ```
 
-### 3. Run Automated End-to-End Test Suite
+### 4. Run Automated Test Suite
 ```bash
-cd server
+cd ../server
 node test_flows.mjs
-# Executes 22 comprehensive integration tests covering all requirements
+# Runs all 22 end-to-end integration tests
 ```
 
 ---
 
-## 📁 Directory Architecture
+## 📁 Repository Directory Structure
 
 ```text
-InfoByte Web Project React/
 ├── server/
 │   ├── config/
-│   │   ├── db.js                 # MongoDB & in-memory fallback connection
-│   │   └── emailService.js       # Nodemailer verification & low-stock alerts
+│   │   ├── db.js                 # MongoDB & embedded fallback store
+│   │   └── emailService.js       # Nodemailer verification & alert engine
 │   ├── controllers/
 │   │   ├── authController.js     # Register, verify, login, reset password
 │   │   ├── inventoryController.js# Stock queries, manual update, alert audit
@@ -102,45 +130,30 @@ InfoByte Web Project React/
 │   ├── middleware/
 │   │   └── authMiddleware.js     # JWT verification & admin-only guards
 │   ├── models/
-│   │   ├── User.js               # User schema
-│   │   ├── Inventory.js          # Ingredient inventory schema
-│   │   ├── Order.js              # Order & timeline schema
-│   │   ├── Pizza.js              # Preset pizza schema
-│   │   └── store.js              # Unified store repository
-│   ├── routes/                   # Express route definitions
-│   ├── seed/
-│   │   └── seedData.js           # Seeds default admin, customer, ingredients, pizzas
-│   ├── socket/
-│   │   └── socketHandler.js      # Socket.io real-time broadcast engine
-│   ├── test_flows.mjs            # Automated verification test suite
-│   ├── .env                      # Environment configuration
-│   └── server.js                 # Express + HTTP + Socket server bootstrap
+│   │   ├── User.js, Inventory.js, Order.js, Pizza.js, store.js
+│   ├── routes/                   # Auth, inventory, order, and pizza routes
+│   ├── seed/seedData.js          # Default admin, customer, ingredients, pizzas
+│   ├── socket/socketHandler.js   # Socket.io real-time broadcast engine
+│   ├── test_flows.mjs            # 22-step automated verification suite
+│   ├── .env.example              # Reference environment variables
+│   └── server.js                 # Server entry point
 └── client/
     ├── src/
     │   ├── components/
-    │   │   ├── Navbar.jsx        # Glassmorphic top navigation + socket status
-    │   │   ├── Footer.jsx        # Footer & architecture badges
-    │   │   └── PizzaVisualizer.jsx # Dynamic SVG interactive pizza layer visualizer
+    │   │   ├── Navbar.jsx, Footer.jsx, PizzaVisualizer.jsx
     │   ├── context/
-    │   │   ├── AuthContext.jsx   # Authentication state & actions
-    │   │   ├── CartContext.jsx   # Shopping cart & financial calculations
-    │   │   └── SocketContext.jsx # WebSockets connection manager
+    │   │   ├── AuthContext.jsx, CartContext.jsx, SocketContext.jsx
     │   ├── pages/
-    │   │   ├── HomeMenu.jsx      # Hero showcase & pizza catalog
-    │   │   ├── CustomPizzaBuilder.jsx # 4-step custom pizza builder studio
-    │   │   ├── Checkout.jsx      # Order summary & Razorpay test checkout
-    │   │   ├── OrderTracking.jsx # Live animated order status stepper
-    │   │   ├── Login.jsx         # Customer login
-    │   │   ├── Register.jsx      # User registration with email verification
-    │   │   ├── VerifyEmail.jsx   # Token-based email verification
-    │   │   ├── ForgotPassword.jsx# Password reset request
-    │   │   ├── ResetPassword.jsx # Set new password form
-    │   │   ├── AdminLogin.jsx    # Separate admin login portal
-    │   │   ├── AdminInventory.jsx# Stock dashboard, manual update, cron alert
-    │   │   └── AdminOrders.jsx   # Kitchen dispatch order management panel
-    │   ├── services/
-    │   │   └── api.js            # Unified API client
-    │   ├── App.jsx               # Application router & views
-    │   └── index.css             # Design tokens & styling
-    └── index.html                # HTML5 structure, fonts & Razorpay script
+    │   │   ├── HomeMenu.jsx, CustomPizzaBuilder.jsx, Checkout.jsx
+    │   │   ├── OrderTracking.jsx, Login.jsx, Register.jsx, VerifyEmail.jsx
+    │   │   ├── ForgotPassword.jsx, ResetPassword.jsx, AdminLogin.jsx
+    │   │   ├── AdminInventory.jsx, AdminOrders.jsx
+    │   ├── services/api.js       # Unified API client
+    │   ├── App.jsx, index.css
+    └── index.html
 ```
+
+---
+
+## 📜 Internship Declaration
+This project is submitted in fulfillment of the **Oasis Infobyte Internship Program (OIBSIP)** in the **Web Development** domain.
