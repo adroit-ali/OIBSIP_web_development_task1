@@ -84,8 +84,8 @@ The primary objective of this project is to build a production-grade, full-stack
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/adroit-ali/slicecraft-pizza-delivery.git
-cd slicecraft-pizza-delivery
+git clone https://github.com/adroit-ali/OIBSIP_web_development_task1.git
+cd OIBSIP_web_development_task1
 ```
 
 ### 2. Start Backend Server
