@@ -3,7 +3,7 @@
 > **Oasis Infobyte Internship Project Submission**  
 > **Domain:** Web Development  
 > **Task:** Pizza Delivery Full-Stack Application  
-> **Author:** Ali Shahjee (Adroit Ali)  
+> **Author:** Syed Muhammad Ali (Adroit Ali)  
 
 ---
 
